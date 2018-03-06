@@ -55,7 +55,7 @@ namespace TrackerBot.Modules
 				byte[] dat;
 				try
 				{
-					dat = await File.ReadAllBytesAsync ( "mod/when.s3m" );
+					dat = await File.ReadAllBytesAsync ( "mod/test_song.mod" );
 				}
 				catch ( IOException ex )
 				{

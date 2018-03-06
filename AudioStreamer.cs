@@ -87,7 +87,10 @@ namespace TrackerBot
 			CancellationTokenSource tokenSource = new CancellationTokenSource ();
 			if ( !m_cancellationTokens.TryAdd ( a_guild.Id, tokenSource ) )
 			{
-				tokenSource = null;
+				if ( !m_cancellationTokens.TryGetValue ( a_guild.Id, out tokenSource ) )
+				{
+					throw new Exception ( "Cancellation token cannot be null!" );
+				}
 			}
 
 			using ( var voiceStream = audioClient.CreatePCMStream ( AudioApplication.Music, 128 * 1024 ) )
