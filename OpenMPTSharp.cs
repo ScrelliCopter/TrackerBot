@@ -7,6 +7,7 @@ namespace OpenMPTSharp
 	public static class Modplug
 	{
 		#region DllImports
+		
 		private enum ErrorCode
 		{
 			OPENMPT_ERROR_OK	= 0,
@@ -32,6 +33,14 @@ namespace OpenMPTSharp
 			OPENMPT_ERROR_FUNC_RESULT_LOG		= 1 << 0,
 			OPENMPT_ERROR_FUNC_RESULT_STORE		= 1 << 1,
 			OPENMPT_ERROR_FUNC_RESULT_DEFAULT	= OPENMPT_ERROR_FUNC_RESULT_LOG | OPENMPT_ERROR_FUNC_RESULT_STORE
+		}
+
+		private enum RenderParam : int
+		{
+			OPENMPT_MODULE_RENDER_MASTERGAIN_MILLIBEL			= 1,
+			OPENMPT_MODULE_RENDER_STEREOSEPARATION_PERCENT		= 2,
+			OPENMPT_MODULE_RENDER_INTERPOLATIONFILTER_LENGTH	= 3,
+			OPENMPT_MODULE_RENDER_VOLUMERAMPING_STRENGTH		= 4
 		}
 
 		[DllImport ( "libopenmpt", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl )]
@@ -68,6 +77,12 @@ namespace OpenMPTSharp
 			/*size_t*/								UIntPtr count,
 			/*int16_t**/							[Out]byte[] interleaved_stereo );
 
+		[DllImport ( "libopenmpt", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl )]
+		/*int*/									private static extern int openmpt_module_set_render_param (
+			/*openmpt_module**/						IntPtr mod,
+			/*int*/									RenderParam param,
+			/*int32_t*/								Int32 value );
+
 		#endregion
 
 		public static int GetLibraryVersion ()
@@ -78,7 +93,7 @@ namespace OpenMPTSharp
 		public class UninitialisedException : Exception { }
 		public class LibException : Exception { public LibException ( string a_msg ) : base ( a_msg ) { } }
 
-		public class ModStream : System.IO.Stream
+		public class ModStream : Stream
 		{
 			#region Whatever
 			// Will never change.
@@ -120,6 +135,9 @@ namespace OpenMPTSharp
 				}
 
 				m_rate = a_sampleRate;
+
+				openmpt_module_set_render_param ( m_mod, RenderParam.OPENMPT_MODULE_RENDER_VOLUMERAMPING_STRENGTH, 0 );
+				openmpt_module_set_render_param ( m_mod, RenderParam.OPENMPT_MODULE_RENDER_INTERPOLATIONFILTER_LENGTH, 1 );
 			}
 
 			protected override void Dispose ( bool disposing )

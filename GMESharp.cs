@@ -112,7 +112,7 @@ namespace GMESharp
 		public class UnsupportedException : Exception { }
 		public class LibException : Exception { public LibException ( string a_msg ) : base ( a_msg ) { } }
 
-		public class VgmStream : System.IO.Stream
+		public class VgmStream : Stream
 		{
 			#region Whatever
 			// Will never change.

@@ -84,7 +84,9 @@ namespace HivelySharp
 
 		public static bool _initialised = false;
 
-		public class HvlStream : System.IO.Stream
+		public class OpenException : Exception { }
+
+		public class HvlStream : Stream
 		{
 			#region Whatever
 			// Will never change.
@@ -121,6 +123,11 @@ namespace HivelySharp
 				}
 
 				m_tune = hvl_LoadTune ( a_filePath, (uint)a_sampleRate, 2 );
+				if ( m_tune == IntPtr.Zero )
+				{
+					throw new OpenException ();
+				}
+
 				m_bufLen = ( a_sampleRate * 2 ) / 50;
 				m_buf1 = new byte[m_bufLen];
 				m_buf2 = new byte[m_bufLen];
