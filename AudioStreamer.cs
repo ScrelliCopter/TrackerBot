@@ -104,6 +104,7 @@ namespace TrackerBot
 				catch ( OperationCanceledException ) { }
 				finally
 				{
+					m_cancellationTokens.TryRemove ( a_guild.Id, out tokenSource );
 					await voiceStream.FlushAsync ();
 				}
 			}

@@ -15,5 +15,8 @@ mod/*.it
 vgm/*.vgm
 vgm/*.vgz
 vgm/*.nsf
+vgm/*.spc
+ahx/*.hvl
+ahx/*.ahx
 avatar/*.png
 avatar/*.jpg

@@ -5,6 +5,7 @@ using Discord;
 using Discord.Commands;
 using OpenMPTSharp;
 using GMESharp;
+using HivelySharp;
 
 namespace TrackerBot.Modules
 {
@@ -26,7 +27,7 @@ namespace TrackerBot.Modules
 		}
 
 		[Command ( "playmod" ), Summary ( "try playing a song with libopenmpt." )]
-		public async Task PlayMod ()
+		public async Task PlayMod ( string a_songName )
 		{
 			var guild = Context.Guild;
 			IGuildUser user = await Context.Guild.GetUserAsync ( Context.User.Id );
@@ -55,7 +56,7 @@ namespace TrackerBot.Modules
 				byte[] dat;
 				try
 				{
-					dat = await File.ReadAllBytesAsync ( "mod/test_song.mod" );
+					dat = await File.ReadAllBytesAsync ( Path.Combine ( "mod", a_songName ) );
 				}
 				catch ( IOException ex )
 				{
@@ -104,7 +105,7 @@ namespace TrackerBot.Modules
 		*/
 
 		[Command ( "playvgm" ), Summary ( "try playing a song with libgme." )]
-		public async Task PlayVgm ()
+		public async Task PlayVgm ( string a_songName )
 		{
 			var guild = Context.Guild;
 			IGuildUser user = await Context.Guild.GetUserAsync ( Context.User.Id );
@@ -130,9 +131,50 @@ namespace TrackerBot.Modules
 
 				playing = true;
 
-				using ( var vgmStream = new Gme.VgmStream ( "vgm/extremeliftoff.vgm" ) )
+				using ( var vgmStream = new Gme.VgmStream ( Path.Combine ( "vgm", a_songName ) ) )
 				{
 					await m_audioStreamer.SendAudioAsync ( Context.Guild, vgmStream );
+				}
+			}
+			finally
+			{
+				if ( playing )
+				{
+					await m_audioStreamer.Leave ( Context.Guild );
+				}
+			}
+		}
+
+		[Command ( "playahx" ), Summary ( "try playing a song with the hively replayer." )]
+		public async Task PlayHvl ( string a_songName )
+		{
+			var guild = Context.Guild;
+			IGuildUser user = await Context.Guild.GetUserAsync ( Context.User.Id );
+			var channel = user.VoiceChannel;
+			if ( channel == null )
+			{
+				await Context.Channel.SendMessageAsync ( $"{user.Mention} You must be in a voice channel to use the audio commands." );
+				return;
+			}
+
+			bool playing = false;
+			try
+			{
+				try
+				{
+					await m_audioStreamer.Join ( Context.Guild, channel );
+				}
+				catch ( TrackerBot.AudioStreamer.AlreadyConnectedException )
+				{
+					await Context.Channel.SendMessageAsync ( $"{user.Mention} I'm already playing in this server silly." );
+					return;
+				}
+
+				playing = true;
+
+				using ( var hvlStream = new Hively.HvlStream ( Path.Combine ( "ahx", a_songName ) ) )
+				{
+					await m_audioStreamer.SendAudioAsync ( Context.Guild, hvlStream );
 				}
 			}
 			finally
