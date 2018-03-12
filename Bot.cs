@@ -20,15 +20,16 @@ namespace TrackerBot
 			}
 
 			// Load config file.
+			ConfigService cfgSrv = new ConfigService ();
 			try
 			{
-				Global.LoadConfig ();
+				cfgSrv.LoadConfig ();
 			}
 			catch ( Exception )
 			{
 				try
 				{
-					Global.SaveConfig ();
+					cfgSrv.SaveConfig ();
 				}
 				catch ( Exception )
 				{
@@ -38,7 +39,7 @@ namespace TrackerBot
 				throw new Exception ( "Need a config please, there I made one for you now go edit it." );
 			}
 
-			if ( String.IsNullOrWhiteSpace ( Global.Config.Token ) )
+			if ( String.IsNullOrWhiteSpace ( cfgSrv.Config.Token ) )
 			{
 				throw new Exception ( "Listen lad I need you to actually give me a tokan or I can't connect to discord, ever think of that huh?" );
 			}
@@ -59,6 +60,7 @@ namespace TrackerBot
 					DefaultRunMode = RunMode.Async,
 					CaseSensitiveCommands = false
 				} ) )
+				.AddSingleton ( cfgSrv )
 				.AddSingleton<Logger> ()
 				.AddSingleton<CommandHandler> ()
 				.AddSingleton<AudioStreamer> ()
@@ -71,19 +73,20 @@ namespace TrackerBot
 
 			// Add modules.
 			var cmd = services.GetRequiredService<CommandService> ();
-			await cmd.AddModuleAsync<Modules.Test> ();
+			//await cmd.AddModuleAsync<Modules.Test> ();
 			await cmd.AddModuleAsync<Modules.Help> ();
 			await cmd.AddModuleAsync<Modules.Admin> ();
 			await cmd.AddModuleAsync<Modules.Music> ();
+			await cmd.AddModuleAsync<Modules.Upload> ();
 
 			// Connect to discord.
-			await m_client.LoginAsync ( TokenType.Bot, Global.Config.Token );
+			await m_client.LoginAsync ( TokenType.Bot, cfgSrv.Config.Token );
 			await m_client.StartAsync ();
 
 			// Set game.
 			m_client.Connected += async () =>
 			{
-				await m_client.SetGameAsync ( Global.Config.Game );
+				await m_client.SetGameAsync ( cfgSrv.Config.Game );
 			};
 
 			// Wait until control-c.

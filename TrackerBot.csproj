@@ -6,45 +6,52 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Discord.Net\src\Discord.Net.Commands\Discord.Net.Commands.csproj" />
-    <ProjectReference Include="..\Discord.Net\src\Discord.Net.Core\Discord.Net.Core.csproj" />
-    <ProjectReference Include="..\Discord.Net\src\Discord.Net.WebSocket\Discord.Net.WebSocket.csproj" />
+    <Compile Remove="avatar\**" />
+    <Compile Remove="gme\**" />
+    <Compile Remove="hvl\**" />
+    <Compile Remove="mod\**" />
+    <Compile Remove="vgm\**" />
+    <EmbeddedResource Remove="avatar\**" />
+    <EmbeddedResource Remove="gme\**" />
+    <EmbeddedResource Remove="hvl\**" />
+    <EmbeddedResource Remove="mod\**" />
+    <EmbeddedResource Remove="vgm\**" />
+    <None Remove="avatar\**" />
+    <None Remove="gme\**" />
+    <None Remove="hvl\**" />
+    <None Remove="mod\**" />
+    <None Remove="vgm\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="hvl_replay.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="libgcc_s_seh-1.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="libgme.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="libopenmpt.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="libsodium.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="libstdc++-6.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="openmpt-mpg123.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="openmpt-ogg.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="openmpt-vorbis.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="openmpt-zlib.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="opus.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Compile Remove="Modules\Test.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="hvl_replay.dll" />
+    <None Remove="libgcc_s_seh-1.dll" />
+    <None Remove="libgme.dll" />
+    <None Remove="libopenmpt.dll" />
+    <None Remove="libsodium.dll" />
+    <None Remove="libstdc++-6.dll" />
+    <None Remove="libvgmplay.dll" />
+    <None Remove="openmpt-mpg123.dll" />
+    <None Remove="openmpt-ogg.dll" />
+    <None Remove="openmpt-vorbis.dll" />
+    <None Remove="openmpt-zlib.dll" />
+    <None Remove="opus.dll" />
+    <None Remove="zlibwapi.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiteDB" Version="4.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Discord.Net\src\Discord.Net.Commands\Discord.Net.Commands.csproj" />
+    <ProjectReference Include="..\Discord.Net\src\Discord.Net.Core\Discord.Net.Core.csproj" />
+    <ProjectReference Include="..\Discord.Net\src\Discord.Net.WebSocket\Discord.Net.WebSocket.csproj" />
   </ItemGroup>
 
 </Project>

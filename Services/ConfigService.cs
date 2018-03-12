@@ -1,14 +1,27 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
+using LiteDB;
 
 namespace TrackerBot
 {
-	static class Global
+	public class ConfigService
 	{
-		public static Config Config { get { return m_cfg; } }
+		private LiteDatabase m_db;
 
-		public static void LoadConfig ()
+		public ConfigService ()
+		{
+			m_db = new LiteDatabase ( @"modules.db" );
+		}
+
+		public
+
+		#region Config
+
+		public Config Config { get { return m_cfg; } }
+		private Config m_cfg;
+
+		public void LoadConfig ()
 		{
 			try
 			{
@@ -21,7 +34,7 @@ namespace TrackerBot
 			}
 		}
 
-		public static void SaveConfig ()
+		public void SaveConfig ()
 		{
 			try
 			{
@@ -33,6 +46,6 @@ namespace TrackerBot
 			}
 		}
 
-		private static Config m_cfg;
+		#endregion
 	}
 }

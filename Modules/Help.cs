@@ -8,10 +8,12 @@ namespace TrackerBot.Modules
     class Help : ModuleBase
     {
 		private readonly CommandService m_cmdSrv;
+		private readonly ConfigService m_cfgSrv;
 
-		public Help ( CommandService a_service )
+		public Help ( CommandService a_cmdSrv, ConfigService a_cfgSrv )
 		{
-			m_cmdSrv = a_service;
+			m_cmdSrv = a_cmdSrv;
+			m_cfgSrv = a_cfgSrv;
 		}
 
 		[Command ( "help" ), Summary ( "Displays this text." )]
@@ -48,7 +50,7 @@ namespace TrackerBot.Modules
 				}
 
 				sb.AppendLine ( "```" );
-				sb.Append ( $"Type `{Global.Config.Prefix}help <command name>` to see detailed information on a command." );
+				sb.Append ( $"Type `{m_cfgSrv.Config.Prefix}help <command name>` to see detailed information on a command." );
 
 				await Context.Channel.SendMessageAsync ( sb.ToString () );
 			}
@@ -62,7 +64,7 @@ namespace TrackerBot.Modules
 				}
 
 				sb.Append ( Context.User.Mention );
-				sb.Append ( $" found help text for command `{Global.Config.Prefix}" );
+				sb.Append ( $" found help text for command `{m_cfgSrv.Config.Prefix}" );
 				sb.Append ( cmd.Name );
 				sb.AppendLine ( "`:" );
 
@@ -72,7 +74,7 @@ namespace TrackerBot.Modules
 					sb.AppendLine ( cmd.Summary );
 				}
 
-				sb.Append ( $"Usage: `{Global.Config.Prefix}" );
+				sb.Append ( $"Usage: `{m_cfgSrv.Config.Prefix}" );
 				sb.Append ( cmd.Name );
 				foreach ( var arg in cmd.Parameters )
 				{

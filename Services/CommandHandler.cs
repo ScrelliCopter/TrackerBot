@@ -10,10 +10,11 @@ namespace TrackerBot
 	{
 		private readonly DiscordSocketClient m_client;
 		private readonly CommandService m_cmdSrv;
+		private readonly ConfigService m_cfgSrv;
 		private readonly Logger	m_logger;
 		private IServiceProvider m_provider;
 
-		public CommandHandler ( IServiceProvider a_provider, DiscordSocketClient a_client, CommandService a_cmdSrv, Logger a_logger )
+		public CommandHandler ( IServiceProvider a_provider, DiscordSocketClient a_client, CommandService a_cmdSrv, ConfigService m_cfgSrv, Logger a_logger )
 		{
 			m_client = a_client;
 			m_cmdSrv = a_cmdSrv;
@@ -32,7 +33,7 @@ namespace TrackerBot
 			}
 
 			int argIdx = 0;
-			if ( msg.HasCharPrefix ( Global.Config.Prefix, ref argIdx ) ||
+			if ( msg.HasCharPrefix ( m_cfgSrv.Config.Prefix, ref argIdx ) ||
 				msg.HasMentionPrefix ( m_client.CurrentUser, ref argIdx ) )
 			{
 				IUser usr = msg.Author;
