@@ -14,8 +14,6 @@ namespace TrackerBot
 			m_db = new LiteDatabase ( @"modules.db" );
 		}
 
-		public
-
 		#region Config
 
 		public Config Config { get { return m_cfg; } }
@@ -26,6 +24,10 @@ namespace TrackerBot
 			try
 			{
 				var file = File.ReadAllText ( "config.json" );
+				if ( file == "null" )
+				{
+					throw new Exception ( "fuck you" );
+				}
 				m_cfg = JsonConvert.DeserializeObject<Config> ( file );
 			}
 			catch ( Exception ex )

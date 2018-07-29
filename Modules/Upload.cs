@@ -14,7 +14,7 @@ namespace TrackerBot.Modules
 			m_cfgSrv = a_cfgSrv;
 		}
 
-		[Command ( "add" )]
-		public async Task Add ( string 
+		//[Command ( "add" )]
+		//public async Task Add ( string 
     }
 }

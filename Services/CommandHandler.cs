@@ -14,10 +14,11 @@ namespace TrackerBot
 		private readonly Logger	m_logger;
 		private IServiceProvider m_provider;
 
-		public CommandHandler ( IServiceProvider a_provider, DiscordSocketClient a_client, CommandService a_cmdSrv, ConfigService m_cfgSrv, Logger a_logger )
+		public CommandHandler ( IServiceProvider a_provider, DiscordSocketClient a_client, CommandService a_cmdSrv, ConfigService a_cfgSrv, Logger a_logger )
 		{
 			m_client = a_client;
 			m_cmdSrv = a_cmdSrv;
+			m_cfgSrv = a_cfgSrv;
 			m_logger = a_logger;
 			m_provider = a_provider;
 
